@@ -26,7 +26,6 @@ class Reservation {
   const std::string& getResourceID() const;
   const std::string& getReservationDate() const;
 
-  // Writes one complete reservation record to the selected output stream.
   void display(std::ostream& output) const;
 };
 

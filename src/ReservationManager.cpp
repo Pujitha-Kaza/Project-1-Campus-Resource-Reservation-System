@@ -16,49 +16,8 @@ ReservationManager::ReservationManager()
 
 ReservationManager::~ReservationManager() { clear(); }
 
-bool ReservationManager::containsReservationID(
-    const std::string& reservationID) const {
-  Node* current = head;
-
-  while (current != nullptr) {
-    if (current->reservation.getReservationID() == reservationID) {
-      return true;
-    }
-    current = current->next;
-  }
-
-  return false;
-}
-
-bool ReservationManager::hasResourceReservation(
-    const std::string& resourceID,
-    const std::string& reservationDate) const {
-  Node* current = head;
-
-  while (current != nullptr) {
-    const Reservation& reservation = current->reservation;
-    if (reservation.getResourceID() == resourceID &&
-        reservation.getReservationDate() == reservationDate) {
-      return true;
-    }
-    current = current->next;
-  }
-
-  return false;
-}
-
 bool ReservationManager::isBlank(const std::string& value) {
-  if (value.empty()) {
-    return true;
-  }
-
-  for (char character : value) {
-    if (!std::isspace(static_cast<unsigned char>(character))) {
-      return false;
-    }
-  }
-
-  return true;
+  return value.find_first_not_of(" \t\n\r") == std::string::npos;
 }
 
 bool ReservationManager::isValidDate(const std::string& date) {
@@ -110,18 +69,29 @@ ReservationStatus ReservationManager::validateReservation(
     return ReservationStatus::INVALID_DATE;
   }
 
-  if (containsReservationID(reservation.getReservationID())) {
-    return ReservationStatus::DUPLICATE_RESERVATION_ID;
-  }
-
   if (!resourceExists) {
     return ReservationStatus::RESOURCE_NOT_FOUND;
   }
 
-  if (!resourceAvailable ||
-      hasResourceReservation(reservation.getResourceID(),
-                             reservation.getReservationDate())) {
+  if (!resourceAvailable) {
     return ReservationStatus::RESOURCE_UNAVAILABLE;
+  }
+
+  // Check the current reservations.
+  Node* current = head;
+  while (current != nullptr) {
+    const Reservation& active = current->reservation;
+
+    if (active.getReservationID() == reservation.getReservationID()) {
+      return ReservationStatus::DUPLICATE_RESERVATION_ID;
+    }
+
+    if (active.getResourceID() == reservation.getResourceID() &&
+        active.getReservationDate() == reservation.getReservationDate()) {
+      return ReservationStatus::RESOURCE_UNAVAILABLE;
+    }
+
+    current = current->next;
   }
 
   return ReservationStatus::SUCCESS;
@@ -138,7 +108,6 @@ ReservationStatus ReservationManager::createReservation(
     return validationResult;
   }
 
-  // Keeping a tail pointer makes the physical list insertion O(1).
   Node* newNode = new Node(reservation);
 
   if (head == nullptr) {
@@ -169,8 +138,7 @@ ReservationStatus ReservationManager::cancelReservation(
     return ReservationStatus::RESERVATION_NOT_FOUND;
   }
 
-  // Save the data before deleting the node so the caller can push it to the
-  // cancellation-history stack.
+  // Save the cancelled reservation for the stack.
   cancelledReservation = current->reservation;
 
   if (previous == nullptr) {
@@ -209,27 +177,6 @@ void ReservationManager::displayActiveReservations(std::ostream& output) const {
 bool ReservationManager::isEmpty() const { return head == nullptr; }
 
 std::size_t ReservationManager::size() const { return reservationCount; }
-
-const char* ReservationManager::getStatusMessage(ReservationStatus status) {
-  switch (status) {
-    case ReservationStatus::SUCCESS:
-      return "Operation completed successfully.";
-    case ReservationStatus::MISSING_REQUIRED_FIELD:
-      return "All reservation fields are required.";
-    case ReservationStatus::INVALID_DATE:
-      return "Reservation date must be a valid date in YYYY-MM-DD format.";
-    case ReservationStatus::DUPLICATE_RESERVATION_ID:
-      return "Reservation ID already exists.";
-    case ReservationStatus::RESOURCE_NOT_FOUND:
-      return "Resource ID does not exist.";
-    case ReservationStatus::RESOURCE_UNAVAILABLE:
-      return "Resource is unavailable for the requested date.";
-    case ReservationStatus::RESERVATION_NOT_FOUND:
-      return "Reservation ID was not found.";
-  }
-
-  return "Unknown reservation status.";
-}
 
 void ReservationManager::clear() {
   while (head != nullptr) {
