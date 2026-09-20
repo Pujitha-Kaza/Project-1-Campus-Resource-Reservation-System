@@ -8,7 +8,7 @@ Resource::Resource() {
   availabilityStatus = AvailabilityStatus::AVAILABLE;
 }
 
-Resource::Resource (const std:: string& id, const std::string& name, const std::string type, AvailabilityStatus status) {
+Resource::Resource (const std::string& id, const std::string& name, const std::string type, AvailabilityStatus status) {
   resourceID = id;
   resourceName = name;
   resourceType = type;
