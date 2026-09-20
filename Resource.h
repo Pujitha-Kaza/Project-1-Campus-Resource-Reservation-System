@@ -17,7 +17,7 @@ class Resource {
 
   public: 
     Resource();
-    Resource(const string& id, const string& name, const string& type, AvailabilityStatus status);
+    Resource(const std::string& id, const std::string& name, const std::string& type, AvailabilityStatus status);
   
     std::string getResourceID() const;
     std::string getResourceName() const;
@@ -26,7 +26,7 @@ class Resource {
 
     void setAvailabilityStatus(AvailabilityStatus status);
     bool isAvailable() const;
-    string getStatusText() const;
+    std::string getStatusText() const;
 
     void display() const;
   };
