@@ -1,12 +1,11 @@
 #include "ResourceList.h"
 #include <iostream>
-#include <algorithm>
 #include <cctype>
 #include <string>
 
 std::string toLowerCase(std::string text) {
-  for (int i = 0; i < text.length(); i++) {
-    text[i] = toLower(text[i]);
+  for (int i = 0; i < text.size(); i++) {
+    text[i] = std::tolower(text[i]);
   }
   return text;
 }
@@ -16,7 +15,7 @@ ResourceList::ResourceList() {
   count = 0;
 }
 
-ResourceList::~ResourceLIst() {
+ResourceList::~ResourceList() {
   clear();
 }
 
@@ -119,7 +118,7 @@ void ResourceList::searchByType(const std::string& type) const {
   bool found = false;
 
   while (current != nullptr) {
-    std::string resourceType = toLowerCase(current->getResourceType());
+    std::string resourceType = toLowerCase(current->data.getResourceType());
 
     if (resourceType == targetType) {
       current->data.display();
@@ -200,45 +199,78 @@ void ResourceList::sortByName() {
     return;
   }
 
-  bool swapped;
+  bool swapped = true;
 
-  do {
+  while (swapped == true) {
     swapped = false;
+
     ResourceNode* current = head;
 
     while (current->next != nullptr) {
-      std::string currentID = current->data.getResourceName();
-      std::string nextID = current->next->data.getResourceName();
+      std::string currentName = toLowerCase(current->data.getResourceName());
+      std::string nextName = toLowerCase(current->next->data.getResourceName());
 
-      if (currentID > nextID) {
+      if (currentName > nextName) {
         swapResources(current->data, current->next->data);
         swapped = true;
       }
       current = current->next;
     }
-  } while (swapped);
+  }
 }
 
-void ResourceList::sortbyType() {
+void ResourceList::sortByType() {
   if (head == nullptr || head->next == nullptr) {
     return;
   }
 
-  bool swapped;
+  bool swapped = true;
 
-  do {
+  while (swapped == true) {
     swapped = false;
+
     ResourceNode* current = head;
 
     while (current->next != nullptr) {
-      std::string currentID = current->data.getResourceType();
-      std::string nextID = current->next->data.getResourceType();
+      std::string currentType = toLowerCase(current->data.getResourceType());
+      std::string nextType = toLowerCase(current->next->data.getResourceType());
 
-      if (currentID > nextID) {
+      if (currentType > nextType) {
         swapResources(current->data, current->next->data);
         swapped = true;
       }
       current = current->next;
     }
-  } while (swapped);
+  }
+}
+
+void ResourceList::sortByAvailability() {
+  if (head == nullptr || head->next == nullptr) {
+    return;
+  }
+
+  bool swapped = true;
+
+  while (swapped == true) {
+    swapped = false;
+
+    ResourceNode* current = head;
+
+    while (current->next != nullptr) {
+      if (current->data.isAvailable() == false && current->next->data.isAvailable() == true) {
+        swapResources(current->data, current->next->data);
+        swapped = true;
+      }
+      current = current->next;
+    }
+  }
+}
+
+void ResourceList::clear()  {
+  while (head != nullptr) {
+    ResourceNode* nodeToDelete = head;
+    head = head->next;
+    delete nodeToDelete;
+  }
+  count = 0;
 }
