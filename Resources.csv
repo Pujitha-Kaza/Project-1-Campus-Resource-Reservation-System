@@ -1,0 +1,6 @@
+ResourceID, ResourceName, ResourceType, AvailabilityStatus
+LS101, Library Study Room, Study Room, Available
+LT201, Dell Latitude 5440, Laptop, Reserved
+CA301, TI-84 Plus CE, Calculator, Available
+LE401, Microscope Plus, Lab Equipment, Unavailable
+TA501, Calculus Tutoring Session, Tutoring Appointment, Available
