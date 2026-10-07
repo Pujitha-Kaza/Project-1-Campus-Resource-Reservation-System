@@ -2,6 +2,8 @@
 
 This repository contains the Milestone 1 campus resource reservation system.
 
+Repository URL: https://github.com/Pujitha-Kaza/Project-1-Campus-Resource-Reservation-System
+
 ## Features
 
 - Loads resources from `Resources.txt`.
