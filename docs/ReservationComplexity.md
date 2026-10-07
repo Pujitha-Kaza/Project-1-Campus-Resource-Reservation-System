@@ -1,16 +1,20 @@
-# Reservation Management Complexity
+# Milestone 1 Complexity Analysis
 
-The active reservations are stored in a singly linked list with both `head`
-and `tail` pointers.
+Let `n` be the number of active reservations and `w` be the number of
+students waiting for one resource.
 
-| Operation | Time Complexity | Explanation |
+| Operation | Time complexity | Explanation |
 | --- | --- | --- |
-| Insert reservation | O(1) after validation | The new node is attached directly to the tail. Request validation is O(n) because the list is checked for duplicate IDs and conflicting resource/date reservations. Therefore, the complete create operation is O(n). |
-| Remove reservation | O(n) | The list may need to be traversed from the head to locate the requested reservation ID. Updating links and deleting the located node are O(1). |
-| Traverse/display reservations | O(n) | Each active reservation node is visited exactly once. |
+| Insert reservation | O(n) | The new node is attached to the tail in O(1), but validation scans the active list for duplicate IDs and conflicting resource/date reservations. |
+| Remove reservation | O(n) | The linked list may be traversed from the head to find the requested reservation. Link updates and deletion are O(1). |
+| Traverse/display reservations | O(n) | Every active reservation node is visited once. |
+| Add to waiting list | O(log r) | The waiting-list map locates a resource queue in O(log r), then queue insertion is O(1). `r` is the number of resource queues. |
+| Process waiting list | O(log r) | Locating the resource queue costs O(log r); removing the first queue item is O(1). |
+| Store cancellation | O(1) | A cancelled reservation is pushed onto the stack. |
+| Undo cancellation | O(n) | The stack pop is O(1), but restoring the reservation calls reservation validation, which may scan the active linked list. |
+| Load resources | O(m) | The input file is read once. `m` is the number of resource records. |
 
-The cancelled reservation is returned by `cancelReservation`. The integrated
-system can push that value onto the cancellation-history stack in O(1). If a
-resource is unavailable, `createReservation` returns
-`RESOURCE_UNAVAILABLE`, allowing the integrated system to enqueue the student
-in its waiting-list queue.
+The active reservations use a singly linked list. The waiting list uses a
+queue for each resource, so requests are processed in FIFO order. The
+cancellation history uses a stack, so undo always restores the most recently
+cancelled reservation first.
