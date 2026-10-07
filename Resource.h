@@ -1,6 +1,7 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
 #include <string>
+#include <iosfwd>
 
 enum class AvailabilityStatus {
   AVAILABLE,
@@ -28,7 +29,7 @@ class Resource {
     bool isAvailable() const;
     std::string getStatusText() const;
 
-    void display() const;
+    void display(std::ostream& output) const;
   };
 
 #endif

@@ -1,5 +1,5 @@
 #include "Resource.h"
-#include <iostream>
+#include <ostream>
 
 Resource::Resource() {
   resourceID = "";
@@ -8,14 +8,15 @@ Resource::Resource() {
   availabilityStatus = AvailabilityStatus::AVAILABLE;
 }
 
-Resource::Resource (const std::string& id, const std::string& name, const std::string type, AvailabilityStatus status) {
+Resource::Resource(const std::string& id, const std::string& name,
+                   const std::string& type, AvailabilityStatus status) {
   resourceID = id;
   resourceName = name;
   resourceType = type;
   availabilityStatus = status;
 }
 
-std::string Resource::getresourceID() const {
+std::string Resource::getResourceID() const {
   return resourceID;
 }
 
@@ -55,6 +56,8 @@ std::string Resource::getStatusText() const {
   return "Unknown";
 }
 
-void Resource::display() const {
-  std:cout << "ID: " << resourceID << " | Name: " << resourceName << " | Type: " << resourceType << " | Status: " << getStatusText() << '\n';
+void Resource::display(std::ostream& output) const {
+  output << "ID: " << resourceID << " | Name: " << resourceName
+         << " | Type: " << resourceType
+         << " | Status: " << getStatusText() << '\n';
 }
