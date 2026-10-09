@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 namespace {
 
@@ -61,6 +62,9 @@ void printMenu() {
             << "8. Process next waiting request\n"
             << "9. Display cancellation history\n"
             << "10. Undo last cancellation\n"
+            << "11. Search reservations\n"
+            << "12. Display reservations sorted by date\n"
+            << "13. Display active reservation report\n"
             << "0. Exit\n";
 }
 
@@ -203,6 +207,42 @@ void undoCancellation(ReservationManager& reservations,
   std::cout << "The most recently cancelled reservation was restored.\n";
 }
 
+void searchReservations(const ReservationManager& reservations) {
+  std::cout << "1. Search by reservation ID\n"
+            << "2. Search by student ID\n";
+  const std::string searchType = readLine("Choose search type: ");
+
+  if (searchType == "1") {
+    const std::string reservationID = readLine("Reservation ID: ");
+    Reservation foundReservation;
+
+    if (reservations.findReservationByID(reservationID, foundReservation)) {
+      foundReservation.display(std::cout);
+    } else {
+      std::cout << "No reservation found with that ID.\n";
+    }
+    return;
+  }
+
+  if (searchType == "2") {
+    const std::string studentID = readLine("Student ID: ");
+    const std::vector<Reservation> matches =
+        reservations.findReservationsByStudentID(studentID);
+
+    if (matches.empty()) {
+      std::cout << "No reservations found for that student.\n";
+      return;
+    }
+
+    for (const Reservation& reservation : matches) {
+      reservation.display(std::cout);
+    }
+    return;
+  }
+
+  std::cout << "Invalid search type.\n";
+}
+
 }  // namespace
 
 int main() {
@@ -268,6 +308,15 @@ int main() {
         break;
       case 10:
         undoCancellation(reservations, resources, cancellationHistory);
+        break;
+      case 11:
+        searchReservations(reservations);
+        break;
+      case 12:
+        reservations.displayReservationsSortedByDate(std::cout);
+        break;
+      case 13:
+        reservations.displayActiveReservationReport(std::cout);
         break;
       case 0:
         std::cout << "Goodbye.\n";

@@ -14,6 +14,9 @@ Repository URL: https://github.com/Pujitha-Kaza/Project-1-Campus-Resource-Reserv
 - Restores the most recently cancelled reservation.
 - Adds students to FIFO waiting lists when a resource is unavailable.
 - Displays active reservations, waiting lists, and cancellation history.
+- Searches reservations by reservation ID or student ID using linear search.
+- Sorts active reservations by date using a team-written merge sort.
+- Generates an active reservation report.
 
 ## Build and run
 
@@ -60,6 +63,15 @@ g++ -std=c++17 -Wall -Wextra -pedantic -I. -Iinclude \
 ./milestone1_tests
 ```
 
+Run the final reservation search, sorting, and reporting tests:
+
+```bash
+g++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
+  src/Reservation.cpp src/ReservationManager.cpp \
+  tests/final_reservation_tests.cpp -o final_reservation_tests
+./final_reservation_tests
+```
+
 ## Project structure
 
 - `Resource.*` and `ResourceManager.*` manage resource data and file loading.
@@ -67,5 +79,6 @@ g++ -std=c++17 -Wall -Wextra -pedantic -I. -Iinclude \
 - `include/CancellationStack.h` and `src/CancellationStack.cpp` implement cancellation history.
 - `Waiting*.h/.cpp` implement FIFO waiting lists.
 - `main.cpp` integrates the components through the user menu.
+- `tests/final_reservation_tests.cpp` tests reservation search, merge sort, and reporting.
 - `docs/ReservationComplexity.md` contains the complexity analysis.
 - `docs/UserGuide.md` explains the menu and normal user flow.

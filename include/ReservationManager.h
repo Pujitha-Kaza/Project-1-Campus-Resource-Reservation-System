@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <iosfwd>
 #include <string>
+#include <vector>
 
 enum class ReservationStatus {
   SUCCESS,
@@ -53,7 +54,15 @@ class ReservationManager {
   ReservationStatus cancelReservation(const std::string& reservationID,
                                        Reservation& cancelledReservation);
 
+  bool findReservationByID(const std::string& reservationID,
+                            Reservation& foundReservation) const;
+  std::vector<Reservation> findReservationsByStudentID(
+      const std::string& studentID) const;
+  std::vector<Reservation> getActiveReservations() const;
+
   void displayActiveReservations(std::ostream& output) const;
+  void displayReservationsSortedByDate(std::ostream& output) const;
+  void displayActiveReservationReport(std::ostream& output) const;
   bool isEmpty() const;
   std::size_t size() const;
 };

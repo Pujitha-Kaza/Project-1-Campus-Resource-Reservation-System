@@ -2,11 +2,71 @@
 
 #include <cctype>
 #include <ostream>
+#include <vector>
 
 namespace {
 
 bool isLeapYear(int year) {
   return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
+bool comesBefore(const Reservation& first, const Reservation& second) {
+  if (first.getReservationDate() != second.getReservationDate()) {
+    return first.getReservationDate() < second.getReservationDate();
+  }
+
+  return first.getReservationID() < second.getReservationID();
+}
+
+void mergeReservations(std::vector<Reservation>& reservations,
+                       std::vector<Reservation>& temporary,
+                       std::size_t first,
+                       std::size_t middle,
+                       std::size_t last) {
+  std::size_t left = first;
+  std::size_t right = middle + 1;
+  std::size_t position = first;
+
+  while (left <= middle && right <= last) {
+    if (comesBefore(reservations[left], reservations[right])) {
+      temporary[position] = reservations[left];
+      ++left;
+    } else {
+      temporary[position] = reservations[right];
+      ++right;
+    }
+    ++position;
+  }
+
+  while (left <= middle) {
+    temporary[position] = reservations[left];
+    ++left;
+    ++position;
+  }
+
+  while (right <= last) {
+    temporary[position] = reservations[right];
+    ++right;
+    ++position;
+  }
+
+  for (std::size_t index = first; index <= last; ++index) {
+    reservations[index] = temporary[index];
+  }
+}
+
+void mergeSortReservations(std::vector<Reservation>& reservations,
+                           std::vector<Reservation>& temporary,
+                           std::size_t first,
+                           std::size_t last) {
+  if (first >= last) {
+    return;
+  }
+
+  const std::size_t middle = first + (last - first) / 2;
+  mergeSortReservations(reservations, temporary, first, middle);
+  mergeSortReservations(reservations, temporary, middle + 1, last);
+  mergeReservations(reservations, temporary, first, middle, last);
 }
 
 }  // namespace
@@ -157,6 +217,51 @@ ReservationStatus ReservationManager::cancelReservation(
   return ReservationStatus::SUCCESS;
 }
 
+bool ReservationManager::findReservationByID(
+    const std::string& reservationID,
+    Reservation& foundReservation) const {
+  Node* current = head;
+
+  while (current != nullptr) {
+    if (current->reservation.getReservationID() == reservationID) {
+      foundReservation = current->reservation;
+      return true;
+    }
+
+    current = current->next;
+  }
+
+  return false;
+}
+
+std::vector<Reservation> ReservationManager::findReservationsByStudentID(
+    const std::string& studentID) const {
+  std::vector<Reservation> matches;
+  Node* current = head;
+
+  while (current != nullptr) {
+    if (current->reservation.getStudentID() == studentID) {
+      matches.push_back(current->reservation);
+    }
+
+    current = current->next;
+  }
+
+  return matches;
+}
+
+std::vector<Reservation> ReservationManager::getActiveReservations() const {
+  std::vector<Reservation> activeReservations;
+  Node* current = head;
+
+  while (current != nullptr) {
+    activeReservations.push_back(current->reservation);
+    current = current->next;
+  }
+
+  return activeReservations;
+}
+
 void ReservationManager::displayActiveReservations(std::ostream& output) const {
   if (head == nullptr) {
     output << "No active reservations found.\n";
@@ -172,6 +277,33 @@ void ReservationManager::displayActiveReservations(std::ostream& output) const {
     current = current->next;
     ++position;
   }
+}
+
+void ReservationManager::displayReservationsSortedByDate(
+    std::ostream& output) const {
+  std::vector<Reservation> sortedReservations = getActiveReservations();
+
+  if (sortedReservations.empty()) {
+    output << "No active reservations found.\n";
+    return;
+  }
+
+  std::vector<Reservation> temporary(sortedReservations.size());
+  mergeSortReservations(sortedReservations, temporary, 0,
+                        sortedReservations.size() - 1);
+
+  output << "===== Reservations Sorted by Date =====\n";
+  for (std::size_t index = 0; index < sortedReservations.size(); ++index) {
+    output << "--- Sorted Reservation " << index + 1 << " ---\n";
+    sortedReservations[index].display(output);
+  }
+}
+
+void ReservationManager::displayActiveReservationReport(
+    std::ostream& output) const {
+  output << "===== Active Reservation Report =====\n";
+  output << "Total active reservations: " << reservationCount << '\n';
+  displayActiveReservations(output);
 }
 
 bool ReservationManager::isEmpty() const { return head == nullptr; }
