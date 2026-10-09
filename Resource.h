@@ -1,6 +1,8 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
+
 #include <string>
+#inlcude <iostream>
 
 enum class AvailabilityStatus {
   AVAILABLE,
@@ -29,6 +31,8 @@ class Resource {
     std::string getStatusText() const;
 
     void display() const;
+
+    std::istream& operator>>(std::istream& in, Resource& r);
   };
 
 #endif
