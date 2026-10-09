@@ -17,6 +17,9 @@ The program loads the resource records before showing the menu.
 8. **Process next waiting request** creates a reservation for the first waiting student when the resource is available.
 9. **Display cancellation history** prints the cancellation stack from newest to oldest.
 10. **Undo last cancellation** restores the most recently cancelled reservation when its resource is available.
+11. **Search reservations** searches by reservation ID or student ID using linear search.
+12. **Display reservations sorted by date** uses the project's merge-sort implementation.
+13. **Display active reservation report** shows the active reservation count and records.
 0. **Exit** closes the program.
 
 Dates must use `YYYY-MM-DD`. A resource that is not found or is not available

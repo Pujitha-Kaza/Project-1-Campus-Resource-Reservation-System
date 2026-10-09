@@ -13,8 +13,15 @@ students waiting for one resource.
 | Store cancellation | O(1) | A cancelled reservation is pushed onto the stack. |
 | Undo cancellation | O(n) | The stack pop is O(1), but restoring the reservation calls reservation validation, which may scan the active linked list. |
 | Load resources | O(m) | The input file is read once. `m` is the number of resource records. |
+| Search by reservation ID | O(n) | The linked list is traversed until the matching ID is found or the list ends. |
+| Search by student ID | O(n) | Every active reservation is checked because multiple reservations may belong to one student. |
+| Merge sort reservations | O(n log n) | The active reservations are copied to a vector, divided recursively, and merged by date. |
+| Active reservation report | O(n) | The report prints the count and traverses each active reservation once. |
 
 The active reservations use a singly linked list. The waiting list uses a
 queue for each resource, so requests are processed in FIFO order. The
 cancellation history uses a stack, so undo always restores the most recently
 cancelled reservation first.
+
+The reservation search and sorting algorithms are implemented in
+`ReservationManager`; no library search or sorting function is used.
