@@ -11,9 +11,36 @@ void ResourceManager::loadResources(const std::string& filename) {
     std::cerr << "Error: Could not open resource file: " << filename << std::endl;
     return;
   }
+  std::string line;
+  while (std::getline(inFile, line)) {
+    if (line.empty()) {
+      continue;
+    }
+    std::stringstream ss(line);
+    std::string id, name, type, statusStr;
 
-  Resource r;
-  while (inFile >> r) {
+    std::getline(ss, id, '|');
+    std::getline(ss, name, '|');
+    std::getline(ss, type, '|');
+    std::getline(ss, statusStr, '|');
+
+    Resource r;
+    r.resourceID = id;
+    r.resourceName = name;
+    r.resourceType = type;
+
+    if (statusStr == "Available") {
+      r.availabilityStatus = AvailabilityStatus::AVAILABLE;
+    }
+    else if (statusStr == "Reserved") {
+      r.availabilityStatus = AvailabilityStatus::RESERVED;
+    }
+    else if (statusStr == "Unavailable") {
+      r.availabilityStatus = AvailabilityStatus::UNAVAILABLE;
+    }
+    else {
+      r.availabilityStatus = AvailabilityStatus::AVAILABLE;
+    }
     resources.push_back(r);
   }
 }
