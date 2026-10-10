@@ -2,6 +2,7 @@
 #define RESOURCE_MANAGER_H
 
 #include "Resource.h"
+#include "Reservation.h"
 
 #include <cstddef>
 #include <iosfwd>
@@ -26,6 +27,19 @@ class ResourceManager {
   void displayAll(std::ostream& output) const;
   void displayAvailability(std::ostream& output) const;
   std::size_t size() const;
+
+  //manual, linear search
+  const Resource* searchByID(const std::string& resourceID) const;
+  std::vector<Resource> sortedByName() const;
+
+  //report
+  struct ResourceUtilization {
+   std::string resourceID;
+   std::size_t activeReservations;
+  };
+
+  //display report
+  void displayUtilization(std::ostream& output, const std::vector<Reservation>& activeReservations) const;
 };
 
 #endif
