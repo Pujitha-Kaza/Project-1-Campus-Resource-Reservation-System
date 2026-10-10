@@ -65,6 +65,9 @@ void printMenu() {
             << "11. Search reservations\n"
             << "12. Display reservations sorted by date\n"
             << "13. Display active reservation report\n"
+            << "14. Search resources\n"
+            << "15. Display resources sorted by name\n"
+            << "16. Display resource utilization report\n"
             << "0. Exit\n";
 }
 
@@ -317,6 +320,32 @@ int main() {
         break;
       case 13:
         reservations.displayActiveReservationReport(std::cout);
+        break;
+      case 14: {
+        const std::string resourceID = readLine("ResourceID: ");
+        const Resource* resource = resources.searchByID(resourceID);
+        if (resource == nullptr) {
+          std::cout << "No resource found with that ID.\n";
+        }
+        else {
+          resource->display(std::cout);
+        }
+        break;
+      }
+      case 15: {
+        const std::vector<Resource> sortedResources = resources.sortedByName();
+        if (sortedResources.empty()) {
+          std::cout "No resources found.\n";
+        }
+        else {
+          for (const Resource& resource : sortedResources) {
+            resource.display(std::cout);
+          }
+        }
+        break;
+      }
+      case 16: 
+        resources.displayUtilization (std::cout, reservations.getActiveReservations());
         break;
       case 0:
         std::cout << "Goodbye.\n";
