@@ -65,15 +65,37 @@ void Resource::display() const {
 
 //file loading operator
 std::istream& operator>>(std::istream& in, Resource& r) {
-  std::string ID, name, type;
-  int statusInt;
-  if (in >> ID >> name >> type >> statusInt) {
-    r.resourceID = ID;
-    r.resourceName = name;
-    r.resourceType = type;
-
-    r.availabilityStatus = static_cast<AvailabilityStatus>(statusInt);
+  std::string line;
+  if (!std::getline(in, line)) {
+    return in;
+  }
+  if (line.empty()) {
+    return in;
   }
 
+  std::stringstream ss(line);
+  std::string, id, name, type, statusStr;
+
+  std::getline(ss, id, '|');
+  std::getline(ss, name, '|');
+  std::getline(ss, type, '|');
+  std::getline(ss, statusStr, '|');
+
+  r.resourceID = id;
+  r.resourceName = name;
+  r.resourceType = type;
+
+  if (statusStr == "Available") {
+    r.availabilityStatus = AvailabilityStatus::AVAILABLE:
+  }
+  else if (statusStr == "Reserved") {
+    r.availabilityStatus = AvailabilityStatus::RESERVED;
+  }
+  else if (statusStr == "Unavailable") {
+    r.availabilityStatus = AvailabilityStatus::UNAVAILABLE;
+  }
+  else {
+    r.availabilityStatus = AvailabilityStatus::AVAILABLE;
+  }
   return in;
 }
