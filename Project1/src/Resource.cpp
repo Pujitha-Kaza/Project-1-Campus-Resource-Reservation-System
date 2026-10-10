@@ -8,14 +8,15 @@ Resource::Resource() {
   availabilityStatus = AvailabilityStatus::AVAILABLE;
 }
 
-Resource::Resource (const std::string& id, const std::string& name, const std::string type, AvailabilityStatus status) {
+Resource::Resource (const std::string& id, const std::string& name, const std::string& type, AvailabilityStatus status) {
   resourceID = id;
   resourceName = name;
   resourceType = type;
   availabilityStatus = status;
 }
 
-std::string Resource::getresourceID() const {
+//getters
+std::string Resource::getResourceID() const {
   return resourceID;
 }
 
@@ -31,10 +32,12 @@ AvailabilityStatus Resource::getAvailabilityStatus() const {
   return availabilityStatus;
 }
 
+//setters
 void Resource::setAvailabilityStatus(AvailabilityStatus status) {
   availabilityStatus = status;
 }
 
+//helpers
 bool Resource::isAvailable() const {
   return availabilityStatus == AvailabilityStatus::AVAILABLE;
 }
@@ -55,6 +58,22 @@ std::string Resource::getStatusText() const {
   return "Unknown";
 }
 
+//display
 void Resource::display() const {
-  std:cout << "ID: " << resourceID << " | Name: " << resourceName << " | Type: " << resourceType << " | Status: " << getStatusText() << '\n';
+  std::cout << "ID: " << resourceID << " | Name: " << resourceName << " | Type: " << resourceType << " | Status: " << getStatusText() << '\n';
+}
+
+//file loading operator
+std::istream& operator>>(std::istream& in, Resource& r) {
+  std::string ID, name, type;
+  int statusInt;
+  if (in >> ID >> name >> type >> statusInt) {
+    r.resourceID = ID;
+    r.resourceName = name;
+    r.resourceType = type;
+
+    r.availabilityStatus = static_cast<AvailabilityStatus>(statusInt);
+  }
+
+  return in;
 }
