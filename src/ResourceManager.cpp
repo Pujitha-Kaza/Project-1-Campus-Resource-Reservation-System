@@ -17,6 +17,42 @@ std::string trim(const std::string& value) {
   return value.substr(first, last - first + 1);
 }
 
+void mergeResources(std::vector<Resource>& items, std::vector<Resource>& scratch, std::size_t first, std::size_t middle, std::size_t last) {
+  std::size_t left = first;
+  std::size_t right = middle;
+  std::size_t output = first;
+
+  while (left < middle && right < last) {
+    if (items[left].getResourceName() <= items[right].getResourceName()) {
+      scratch[output++] = items[left++];
+    }
+    else {
+      scratch[output++] = items[right++];
+    }
+  }
+
+  while (left < middle) {
+    scratch[output++] = items[left++];
+  }
+  while (right < last) {
+    scratch[output++] = items[right++];
+  }
+
+  for (std::size_t index = first; index < last; ++index) {
+    items[index] = scratch[index];
+  }
+}
+
+void mergeSortResources(std::vector<Resource>& items, std::vector<Resource>& scratch, std::size_t first, std::size_t last) {
+  if (last - first < 2) {
+    return;
+  }
+  const std::size_t middle = first + (last - first) / 2;
+  mergeSortResources(items, scratch, first, middle);
+  mergeSortResources(items, scratch, middle, last);
+  mergeResources(items, scratch, first, middle, last);
+}
+    
 }  // namespace
 
 int ResourceManager::findIndex(const std::string& resourceID) const {
@@ -151,3 +187,36 @@ void ResourceManager::displayAvailability(std::ostream& output) const {
 }
 
 std::size_t ResourceManager::size() const { return resources.size(); }
+
+const Resource* ResourceManager::searchByID (const std::string& resourceID) const {
+  for (const Resource& resource : resources) {
+    if (resource.getResourceID() == resourceID) {
+      return &resource;
+    }
+  }
+  return nullptr;
+}
+
+std::vector<Resource> ResourceManager::sortedByName() const {
+  std::vector<Resource> sorted = resources;
+  std::vector<Resource> scratch(sorted.size());
+  mergeSortResources(sorted, scratch, 0, sorted.size());
+  return sorted;
+}
+
+void ResourceManager::displayUtilization (std::ostream& output, const std::vector<Reservation>& activeReservations) const {
+  if (resources.empty()) {
+    output << "No resources found.\n";
+    return;
+  }
+  output << "Resource Utilization Report\n";
+  for (const Resource& resource : resources) {
+    std::size_t count = 0;
+    for (const Reservation& reservation : activeReservations) {
+      if (reservation.getResourceID() == resource.getResourceID()) {
+        ++count;
+      }
+    }
+    output << resource.getResourceID() << " - " << resource.getResourceName() << ": " << count << " active Reservation(s)\n";
+  }
+}
