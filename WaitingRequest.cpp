@@ -1,4 +1,4 @@
-#include "../include/WaitingRequest.h"
+#include "WaitingRequest.h"
 #include <iostream>
 
 WaitingRequest::WaitingRequest()

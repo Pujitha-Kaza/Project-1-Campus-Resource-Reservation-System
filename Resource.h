@@ -1,0 +1,35 @@
+#ifndef RESOURCE_H
+#define RESOURCE_H
+#include <string>
+#include <iosfwd>
+
+enum class AvailabilityStatus {
+  AVAILABLE,
+  RESERVED,
+  UNAVAILABLE
+};
+
+class Resource {
+  private:
+    std::string resourceID;
+    std::string resourceName;
+    std::string resourceType;
+    AvailabilityStatus availabilityStatus;
+
+  public: 
+    Resource();
+    Resource(const std::string& id, const std::string& name, const std::string& type, AvailabilityStatus status);
+  
+    std::string getResourceID() const;
+    std::string getResourceName() const;
+    std::string getResourceType() const;
+    AvailabilityStatus getAvailabilityStatus() const;
+
+    void setAvailabilityStatus(AvailabilityStatus status);
+    bool isAvailable() const;
+    std::string getStatusText() const;
+
+    void display(std::ostream& output) const;
+  };
+
+#endif
