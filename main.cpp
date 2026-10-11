@@ -335,7 +335,7 @@ int main() {
       case 15: {
         const std::vector<Resource> sortedResources = resources.sortedByName();
         if (sortedResources.empty()) {
-          std::cout "No resources found.\n";
+          std::cout << "No resources found.\n";
         }
         else {
           for (const Resource& resource : sortedResources) {
