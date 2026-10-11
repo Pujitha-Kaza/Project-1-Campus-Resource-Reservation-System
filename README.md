@@ -74,7 +74,7 @@ g++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
 
 ## Project structure
 
-- `Resource.*` and `ResourceManager.*` manage resource data and file loading.
+- `src/Resource*.cpp`, `include/Resource*.h`, `src/ResourceManager*.cpp`, and `include/ResourceManager*.h` manage resource data and file loading.
 - `include/Reservation*.h` and `src/Reservation*.cpp` implement reservations.
 - `include/CancellationStack.h` and `src/CancellationStack.cpp` implement cancellation history.
 - `Waiting*.h/.cpp` implement FIFO waiting lists.
