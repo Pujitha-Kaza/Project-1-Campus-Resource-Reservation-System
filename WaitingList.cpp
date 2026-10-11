@@ -1,4 +1,4 @@
-#include "WaitingList.h"
+#include "../include/WaitingList.h"
 #include <iostream>
 
 void WaitingList::addToWaitingList(const WaitingRequest& request) {
