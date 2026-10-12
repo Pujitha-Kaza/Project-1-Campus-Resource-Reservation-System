@@ -75,6 +75,8 @@ g++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
 ./final_reservation_tests
 ```
 
+Run the final reservation search, sorting, and reporting tests:
+
 ```bash
 g++ -std=c++17 -Wall -Wextra -Werror -pedantic -I. -Iinclude \
   Resource.cpp ResourceManager.cpp src/Reservation.cpp \
