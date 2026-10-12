@@ -6,6 +6,9 @@ Repository URL: https://github.com/Pujitha-Kaza/Project-1-Campus-Resource-Reserv
 
 ## Features
 
+- Searches resources by ID using a manual linear search.
+- Sorts a copy of the resources alphabetically by name using merge sort.
+- Reports active reservation counts for every resource, including resources with no active reservations.
 - Loads resources from `Resources.txt`.
 - Displays resources and their availability.
 - Creates and validates reservations.
