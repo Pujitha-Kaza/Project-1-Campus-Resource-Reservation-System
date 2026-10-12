@@ -80,8 +80,8 @@ Run the final reservation search, sorting, and reporting tests:
 ```bash
 g++ -std=c++17 -Wall -Wextra -Werror -pedantic -I. -Iinclude \
   Resource.cpp ResourceManager.cpp src/Reservation.cpp \
-  tests/resource_management_tests.cpp -o resource_management_tests
-./resource_management_tests
+  tests/final_resource_management_tests.cpp -o final_resource_management_tests
+./final_resource_management_tests
 ```
 
 ## Project structure
