@@ -20,6 +20,9 @@ The program loads the resource records before showing the menu.
 11. **Search reservations** searches by reservation ID or student ID using linear search.
 12. **Display reservations sorted by date** uses the project's merge-sort implementation.
 13. **Display active reservation report** shows the active reservation count and records.
+14. **Search resources** prompts for a resource ID and displays the matching resource, or a message if it isn't found.
+15. **Display resources sorted by name** displays a copy of the resources in alphabetical order. The original list is unchanged.
+16. **Display resource utilization report** shows the active reservation count for each resource, including zzero for resources with no active reservations.
 0. **Exit** closes the program.
 
 Dates must use `YYYY-MM-DD`. A resource that is not found or is not available
