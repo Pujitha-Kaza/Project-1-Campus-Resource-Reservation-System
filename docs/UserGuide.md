@@ -25,3 +25,5 @@ The program loads the resource records before showing the menu.
 Dates must use `YYYY-MM-DD`. A resource that is not found or is not available
 cannot be reserved. When a reservation cannot be created because a resource is
 unavailable, the student is added to that resource's waiting list.
+
+The Resource Management tests cover loading 'Resources.txt', missing and invalid input files, availability changes, existing and missing ID searches, alphabetical sorting, utilization counts, and resources with zero active reservations.
