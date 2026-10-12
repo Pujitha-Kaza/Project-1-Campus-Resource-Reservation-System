@@ -31,7 +31,7 @@ public:
         const std::string& resourceId) const;
 
     void displayAllWaitingLists() const;
-
+    void displayWaitingListStatistics() const;
     bool isEmpty() const;
 };
 
