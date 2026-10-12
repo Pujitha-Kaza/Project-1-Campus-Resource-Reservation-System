@@ -75,6 +75,13 @@ g++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
 ./final_reservation_tests
 ```
 
+```bash
+g++ -std=c++17 -Wall -Wextra -Werror -pedantic -I. -Iinclude \
+  Resource.cpp ResourceManager.cpp src/Reservation.cpp \
+  tests/resource_management_tests.cpp -o resource_management_tests
+./resource_management_tests
+```
+
 ## Project structure
 
 - `src/Resource*.cpp`, `include/Resource*.h`, `src/ResourceManager*.cpp`, and `include/ResourceManager*.h` manage resource data and file loading.
@@ -85,3 +92,4 @@ g++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
 - `tests/final_reservation_tests.cpp` tests reservation search, merge sort, and reporting.
 - `docs/ReservationComplexity.md` contains the complexity analysis.
 - `docs/UserGuide.md` explains the menu and normal user flow.
+- `tests/final_resource_management_tests.cpp` tests resource loading, search, sorting, availability, and utilization reporting.
