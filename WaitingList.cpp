@@ -161,6 +161,26 @@ void WaitingList::displayAllWaitingLists() const {
     }
 }
 
+void WaitingList::displayWaitingListStatistics() const {
+    if (waitingQueues.empty()) {
+        std::cout << "There are currently no waiting-list requests."
+                  << std::endl;
+        return;
+    }
+
+    std::cout << "\n===== Waiting List Statistics ====="
+              << std::endl;
+
+    for (std::map<std::string,
+                  std::queue<WaitingRequest>>::const_iterator it =
+             waitingQueues.begin();
+         it != waitingQueues.end();
+         ++it) {
+        std::cout << "Resource ID: " << it->first
+                  << " | Students waiting: " << it->second.size()
+                  << std::endl;
+    }
+}
 bool WaitingList::isEmpty() const {
     for (std::map<std::string,
                   std::queue<WaitingRequest>>::const_iterator it =

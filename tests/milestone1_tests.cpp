@@ -42,11 +42,13 @@ int main() {
       WaitingRequest("1001", "Alice", "R103", "2026-09-20"));
   waitingList.addToWaitingList(
       WaitingRequest("1002", "Bob", "R103", "2026-09-21"));
+      waitingList.displayWaitingListStatistics();
   check(waitingList.getWaitingCount("R103") == 2,
         "waiting list stores requests");
   check(waitingList.getNextWaitingRequest("R103").getStudentId() == "1001",
         "waiting list follows FIFO order");
-  waitingList.removeNextWaitingRequest("R103");
+        waitingList.removeNextWaitingRequest("R103");
+        waitingList.displayWaitingListStatistics();
   check(waitingList.getWaitingCount("R103") == 1,
         "waiting list removes the first request");
 
